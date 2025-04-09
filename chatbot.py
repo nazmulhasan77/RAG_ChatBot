@@ -1,3 +1,5 @@
+import bs4
+from langchain_community.document_loaders import WebBaseLoader
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_ollama import OllamaEmbeddings
@@ -12,14 +14,16 @@ from dotenv import load_dotenv
 load_dotenv()
 
 loader = PyPDFLoader("D:\Education\ML\RAG-ChatBot\CV.pdf")
+
 docs=loader.load()
+
 
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=100, chunk_overlap=20)
 split_docs = text_splitter.split_documents(docs)
 
-embadding = OllamaEmbeddings(model="deepseek-r1:latest")
+embedding = OllamaEmbeddings(model="deepseek-r1:latest")
 
-vector= FAISS.from_documents(split_docs,embadding)
+vector= FAISS.from_documents(split_docs,embedding)
 
 retriever=vector.as_retriever()
 
